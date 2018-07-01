@@ -59,4 +59,45 @@ class TicTacToe
     @board.count{|counter| counter == "X" || counter == "O"}
   end
 
+  def won?
+    WIN_COMBINATIONS.detect{|combination|
+        @board[combination[0]] == @board[combination[1]] && @board[combination[1]] == @board[combination[2]] && position_taken?(combination[0])
+      }
+  end
+
+  def full?
+    !@board.any?{ |i| i == " " }
+  end
+
+  def draw?
+    full? && !won?
+  end
+
+  def over?
+    draw?  || won?
+  end
+
+  def winner
+    if combo = won?
+      @board[combo[0]]
+    end
+  end
+
+  def turn_count
+    counter = 0
+    @board.each{|slot|
+      if slot != " "
+        counter += 1
+      end }
+    counter
+  end
+
+  def current_player
+    if turn_count % 2 == 0
+      return "X"
+    else
+      return "O"
+    end
+  end
+
 end
